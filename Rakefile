@@ -63,3 +63,27 @@ task :bundle_cookbook, :cookbook do |t, args|
 
   FileUtils.rm_rf temp_dir
 end
+
+# Bundle all the cookbooks
+desc "Bundle all the cookbooks and mycookbooks for distribution"
+task :bundle_all_cookbooks do 
+  tarball_name = "cookbooks.tar.gz"
+  tarball_dir = File.join(TOPDIR, "pkgs")
+  temp_dir = File.join(TOPDIR, "tmp")
+  temp_bundle_dir = File.join(temp_dir, "bundled")
+  FileUtils.makedirs(tarball_dir)
+  FileUtils.makedirs(temp_bundle_dir)
+
+  children = ["cookbooks/", "site-cookbooks/"] # trailing slashes so content of  folders are copied
+  children.each do |folder|
+    FileUtils.cp_r(folder, temp_bundle_dir)
+  end
+
+  FileUtils.cd(temp_bundle_dir)
+  system("tar  -czf  #{tarball_dir}/#{tarball_name} #{children.join(' ')}")
+  
+  # remove the temporary dirs && return cwd to root of git repo
+  FileUtils.rm_rf(temp_dir)
+  FileUtils.cd(TOPDIR)
+end
+
