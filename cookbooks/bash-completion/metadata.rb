@@ -1,0 +1,7 @@
+maintainer       "Sahil Cooner"
+maintainer_email "sahil.cooner@gmail.com"
+license          "Apache 2.0"
+description      "Installs bash-completion and sets global use flag"
+version          "0.1"
+supports         "gentoo"
+depends          "gentoo"
